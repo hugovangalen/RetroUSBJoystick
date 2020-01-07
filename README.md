@@ -1,6 +1,6 @@
 # RetroUSBJoystick
 
-This is a very simple sketch that allows you to connect your C64 joystick via USB using an Arduino Micro (or other boards based on ATmega32u4 with native USB support).
+This is a very simple sketch that allows you to connect your "retro" C64 joystick on modern systems via USB. It requires an Arduino Micro (or other boards based on ATmega32u4 with native USB support). 
 
 ## Dependencies
 
@@ -24,6 +24,9 @@ Female joystick connector as seen at the end of the cable:
 ```
 
 
+## Wireless (NRF24)
+
+I am working on a solution that allows you to use these old joysticks *wirelessly*.
 
 
 ## License
