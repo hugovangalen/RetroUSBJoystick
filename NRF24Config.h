@@ -2,6 +2,11 @@
 #define _NRF24_CONFIG_H_
 
 /**
+ * Configuration
+ */
+//#define NRF24_SUPPORT_IRQ
+
+/**
  * PIN assignments.
  */
 #ifndef NRF24_CE
@@ -36,5 +41,13 @@
 #ifndef NRF24_CHANNEL
 #define NRF24_CHANNEL  70
 #endif
+
+struct JoystickPacket
+{
+    uint8_t  radio;
+    uint32_t seq;
+    
+    uint8_t  buttonState;
+};
 
 #endif /* _NRF24_CONFIG_H_ */
