@@ -1,22 +1,45 @@
-#include "C64Joystick.h"
 
-#define ERROR_LED       13
-
-/** `LOCAL_CLIENT` if no wireless is required. */
-//#define LOCAL_CLIENT
-
-/** `REMOTE_CLIENT` if this is the SENDER of wireless data. */
-#define REMOTE_ClIENT
-
-/** `REMOTE_SERVER` if this is the RECEIVER of wireless data. */
-//#define REMOTE_SERVER
+#include "RetroUSBJoystickConfig.h"
 
 #if defined(REMOTE_CLIENT)
-C64JoystickTX joy();
+
+#include "C64JoystickTX.h"
+#define C64JOYSTICK_MODE 1
+
+/**
+ * Instantiate the TX (transmit) component. This is what 
+ * the actual joystick is connect to -- and which sends to
+ * the RX (receiving) part.
+ */
+C64JoystickTX joy( REMOTE_CLIENT );
+
+#endif
+
+#if defined(REMOTE_SERVER)
+#include "C64JoystickRX.h"
+#define C64JOYSTICK_MODE 2
+
+/**
+ * Instantiate the RX (receive) component.
+ */
+C64JoystickRX joy( REMOTE_CLIENT );
+
 #endif
 
 #if defined(LOCAL_CLIENT)
-C64Joystick joy();
+#include "C64Joystick.h"
+#define C64JOYSTICK_MODE 0
+
+/**
+ * Instantiate a local USB joystick that is connected locally. This
+ * is the "wired" solution.
+ */
+C64Joystick joy;
+#endif
+
+
+#ifndef C64JOYSTICK_MODE
+#error You need to enable REMOTE_SERVER, REMOTE_CLIENT or LOCAL_CLIENT. (These are mutually exclusive, you can only enable one.)
 #endif
 
 void setup() 
@@ -26,11 +49,10 @@ void setup()
 #endif
     
 #ifdef SERIAL_DEBUG
-  Serial.begin( 2000000 );
+  Serial.begin( 9600 );
   while(!Serial);
-  Serial.println( "v0.9.2 READY" );
 #endif
- 
+  
 
 #if defined(REMOTE_CLIENT)
   // Try to initialise the radio. Deadlock if there is a failure.
@@ -52,17 +74,36 @@ void setup()
 #endif /* REMOTE_CLIENT */
 
 #if defined(LOCAL_CLIENT)
-  joy.begin();
+  joy.setup();
 #endif /* LOCAL_CLIENT */
   
+
+#ifdef SERIAL_DEBUG
+    
+  #if defined(LOCAL_CLIENT)
+  DEBUG( "LocalClient " );
+  #endif
+
+  #if defined(REMOTE_CLIENT)
+  DEBUG( "ControllerTX" );
+  #endif
+
+  #if defined(REMOTE_SERVER)
+  DEBUG( "ControllerRX" );
+  #endif
+  
+  Serial.println( "v0.9.2 READY" );
+#endif
+
 } // void setup()
 
 
 
 void loop() 
 {
+
 #if defined(LOCAL_CLIENT)
-  joy.update();  
+  joy.loop();  
 #endif /* LOCAL_CLIENT */
   
 } // void loop()
