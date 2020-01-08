@@ -1,16 +1,6 @@
 #include "C64Joystick.h"
 
-#define SERIAL_DEBUG
 #define ERROR_LED       13
-
-#if defined(SERIAL_DEBUG)
-  #define DEBUG( a )    Serial.print( a )
-  #define DEBUGLN( a )  Serial.println( a )
-#else
-  #define DEBUG( a )    /* void */
-  #define DEBUGLN( a )  /* void */
-#endif
-
 
 /** `LOCAL_CLIENT` if no wireless is required. */
 //#define LOCAL_CLIENT
@@ -22,11 +12,11 @@
 //#define REMOTE_SERVER
 
 #if defined(REMOTE_CLIENT)
-C64JoystickTX joy( 2, 3, 4, 5, 6 );
+C64JoystickTX joy();
 #endif
 
 #if defined(LOCAL_CLIENT)
-C64Joystick joy( 2, 3, 4, 5, 6 );
+C64Joystick joy();
 #endif
 
 void setup() 

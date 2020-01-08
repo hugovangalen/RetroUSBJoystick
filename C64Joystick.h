@@ -24,13 +24,8 @@ class C64Joystick : public C64JoystickBase {
   private:
     Joystick_ *_controller;
     
-    ///uint8_t _buttons[ _C64_MAX_BUTTONS ];
-    ///bool    _pressed[ _C64_MAX_BUTTONS ];
-    
   public:
-    C64Joystick( uint8_t up, uint8_t down, 
-      uint8_t left, uint8_t right,
-      uint8_t fire );
+    C64Joystick();
 
     void begin();
     bool loop();

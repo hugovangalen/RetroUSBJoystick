@@ -41,7 +41,7 @@ static void radioInterrupt()
 /**
  * The constructor.
  */
-C64JoystickTX::C64JoystickTX( uint8_t deviceId, uint8_t up,  uint8_t down, uint8_t left, uint8_t right, uint8_t fire ) : NRFLite(), C64JoystickBase( up, down, left, right, fire )
+C64JoystickTX::C64JoystickTX( uint8_t deviceId ) : NRFLite(), C64JoystickBase()
 {
     _deviceId = deviceId;
 }

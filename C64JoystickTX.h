@@ -12,7 +12,7 @@ class C64JoystickTX : public NRFLite, C64JoystickBase {
         uint8_t _deviceId;
 
     public:
-        C64JoystickTX( uint8_t deviceId, uint8_t up,  uint8_t down, uint8_t left, uint8_t right, uint8_t fire );
+        C64JoystickTX( uint8_t deviceId );
         bool begin( bool irq = false, uint8_t irqPin = NRF24_IRQ );
 };
 
