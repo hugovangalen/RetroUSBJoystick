@@ -19,18 +19,17 @@
 #define _C64_FIRE_BUTTON   0
 
 class C64Joystick : public C64JoystickBase {
-  const uint8_t Up = 0, Down = 1, Left = 2, Right = 3, Fire = 4;
   
   private:
     Joystick_ *_controller;
+    uint8_t _lastSentState = 0;
     
   public:
     C64Joystick();
-
-    void begin();
-    bool loop();
     
-    //bool update();
+    void sync();
+    void setup();
+    bool loop();
 };
 
 #endif /* _C64_JOYSTICK_H_ */

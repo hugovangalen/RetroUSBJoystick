@@ -1,4 +1,28 @@
 #ifndef _C64_JOYSTICK_RX_H_
 #define _C64_JOYSTICK_RX_H_
 
+#include <Arduino.h>
+
+#include <SPI.h>
+#include <NRFLite.h>
+#include <Joystick.h>
+
+#include "C64Joystick.h"
+#include "NRF24Config.h"
+
+/**
+ * This is the RECEIVING part of the C64 Wireless Joystick,
+ * which could handle more than 1 device connected over 
+ * the radio.
+ */
+class C64JoystickRX : public NRFLite, C64Joystick {
+    protected:
+        JoystickPacket _packet;
+
+    public:
+        C64JoystickRX() : NRFLite(), C64Joystick() {}
+        bool begin( bool irq = false, uint8_t irqPin = NRF24_IRQ );
+        void loop();
+};
+
 #endif /* _C64_JOYSTICK_RX_H_ */

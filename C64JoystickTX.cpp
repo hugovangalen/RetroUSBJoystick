@@ -7,6 +7,8 @@
  * This gets assigned in the constructor.
  */
 static C64JoystickTX *_radioPointer = NULL;
+
+/*
 static bool _sendSucceeded, _sendFailed;
 
 static void radioInterrupt()
@@ -36,6 +38,7 @@ static void radioInterrupt()
         _sendFailed = true;
     }
 }
+ */
 
 
 /**
@@ -61,8 +64,10 @@ bool C64JoystickTX::begin( bool irq, uint8_t irqPin )
     
     if (irq)
     {
+#ifdef NRF24_SUPPORT_IRQ
         _radioPointer = this;
         attachInterrupt( digitalPinToInterrupt( irqPin ), radioInterrupt, FALLING );
+#endif
     }
     else
     {
