@@ -80,14 +80,17 @@ void setup()
 #endif
   
 
-#if defined(REMOTE_CLIENT)
+#if defined(REMOTE_CLIENT) || defined(REMOTE_SERVER)
+  
+  // Wireless operation -- 
   // Try to initialise the radio. Deadlock if there is a failure.
   if (!joy.begin())
   {
-    DEBUGLN( "RF24 init failed!" );
+    DEBUGLN( "NRF24 init failed!" );
     
     // Deadlock with optional blinking LED.
-    while(1) {
+    while(1) 
+    {
 #ifdef ERROR_LED
         digitalWrite( ERROR_LED, HIGH );
         delay( 250 );
@@ -99,10 +102,15 @@ void setup()
   
 #endif /* REMOTE_CLIENT */
 
+
 #if defined(LOCAL_CLIENT)
+
+  // Wired operation.
   joy.setup();
+  
 #endif /* LOCAL_CLIENT */
   
+
 #ifdef ERROR_LED 
   digitalWrite( ERROR_LED, LOW );
 #endif
