@@ -5,7 +5,6 @@ struct JoystickPacket
 {
     uint8_t  id;    // client identification (radio ID)
     uint32_t seq;   // sequence number
-
     uint8_t  buttonState;
 };
 
