@@ -10,7 +10,7 @@
  * PIN assignments.
  */
 #ifndef NRF24_CE
-#define NRF24_CE    10
+#define NRF24_CE    A1
 #endif
 
 #ifndef NRF24_IRQ
@@ -39,7 +39,7 @@
 #endif
 
 #ifndef NRF24_CHANNEL
-#define NRF24_CHANNEL  70
+#define NRF24_CHANNEL  58
 #endif
 
 #endif /* _NRF24_CONFIG_H_ */
