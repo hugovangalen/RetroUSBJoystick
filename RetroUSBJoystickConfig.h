@@ -29,13 +29,19 @@
  * `REMOTE_CLIENT` if this is the SENDER of wireless data, this
  * also sets the clientId for the radio transmissions.
  */
-#define REMOTE_CLIENT   1
+//#define REMOTE_CLIENT       1
 
 
 /** 
  * `REMOTE_SERVER` if this is the RECEIVER of wireless data. 
  */
-//#define REMOTE_SERVER
+#define REMOTE_SERVER
 
+
+/**
+ * This only applies to REMOTE_CLIENT and REMOTE_SERVER, it
+ * defines the radio ID of the server.
+ */
+#define REMOTE_SERVER_ID    64
 
 #endif /*_RETROUSBJOYSTICK_CONFIG_H_*/
