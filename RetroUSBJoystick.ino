@@ -63,6 +63,20 @@ void setup()
 #ifdef SERIAL_DEBUG
   Serial.begin( 9600 );
   while(!Serial);
+  
+  #if defined(LOCAL_CLIENT)
+  Serial.print( "LocalClient " );
+  #endif
+
+  #if defined(REMOTE_CLIENT)
+  Serial.print( "ControllerTX" );
+  #endif
+
+  #if defined(REMOTE_SERVER)
+  Serial.print( "ControllerRX" );
+  #endif
+  
+  Serial.println( " v0.9.3 by Hugo van Galen, 2020" );
 #endif
   
 
@@ -89,27 +103,11 @@ void setup()
   joy.setup();
 #endif /* LOCAL_CLIENT */
   
-
-#ifdef SERIAL_DEBUG
-    
-  #if defined(LOCAL_CLIENT)
-  DEBUG( "LocalClient " );
-  #endif
-
-  #if defined(REMOTE_CLIENT)
-  DEBUG( "ControllerTX" );
-  #endif
-
-  #if defined(REMOTE_SERVER)
-  DEBUG( "ControllerRX" );
-  #endif
-  
-  Serial.println( " v0.9.3 by Hugo van Galen, 2020" );
-#endif
-
 #ifdef ERROR_LED 
   digitalWrite( ERROR_LED, LOW );
 #endif
+  
+  DEBUGLN( "READY" );
 
 } // void setup()
 
