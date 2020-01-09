@@ -60,6 +60,8 @@ C64JoystickTX::C64JoystickTX( uint8_t deviceId ) : NRFLite(), C64JoystickBase()
  */
 bool C64JoystickTX::begin( bool irq, uint8_t irqPin ) 
 {
+    C64JoystickBase::begin();
+    
     if (!init( _deviceId, NRF24_CE, NRF24_SS, NRF24_BITRATE, NRF24_CHANNEL ))
     {
         return false;
@@ -87,12 +89,58 @@ bool C64JoystickTX::begin( bool irq, uint8_t irqPin )
  */
 void C64JoystickTX::sync()
 {
-    _packet.seq++;
-    _packet.buttonState = _buttonState;
-    
-    if (!send( REMOTE_SERVER_ID, &_packet, sizeof( _packet )))
+#ifdef ERROR_LED
+    digitalWrite( ERROR_LED, HIGH );
+#endif
+
+    /*
+    // Send the last operation multiple times to ensure
+    // it reaches the other side.
+    if (_buttonState != _packet.buttonState)
     {
-        DEBUGLN( "Send failure!" );
+        _txCount = 0;
+    }
+    else
+    {
+        _txCount++;
+    }
+    
+    
+    if (_txCount < 16)
+    { 
+    */
+    if (_buttonState != _packet.buttonState)
+    {
+        _packet.seq++;
+        _packet.buttonState = _buttonState;
+        
+#ifdef SERIAL_DEBUG
+        Serial.print( "Sending seq=" );
+        Serial.print( _packet.seq, DEC );
+        Serial.print( ", data=" );
+        Serial.println( _packet.buttonState, HEX );
+#endif
+        
+        if (!send( REMOTE_SERVER_ID, &_packet, sizeof( _packet )))
+        {
+            _failedTx++;
+        
+#ifdef SERIAL_DEBUG
+            if (_failedTx > 16)
+            {
+                Serial.println( "NRF24 send failed more than 16 times!" );
+                _failedTx = 0;
+            }
+#endif
+        
+        }
+        else
+        {
+            _failedTx = 0;
+#ifdef ERROR_LED
+            digitalWrite( ERROR_LED, LOW );
+#endif
+        }
     }
     
 } // void C64JoystickTX::sync()
@@ -104,9 +152,32 @@ void C64JoystickTX::sync()
  */
 void C64JoystickTX::loop() 
 {   
+#ifdef C64JOYSTICK_TX_TEST
+    
+    // In test mode we'll send one button after the 
+    // other with some delay in between.
+    for (uint8_t testState = 0b00000001; testState <= 0b00010000; testState = testState << 1)
+    {
+        // Send button press:
+        _buttonState = testState;
+        
+        sync();
+        delay( 500 );
+        
+        // Send release:
+        _buttonState = 0;
+        sync();
+        
+        delay( 1000 );
+    }
+#else
+
     while (update()) 
     {
         sync();
     }
     
+#endif /* C64JOYSTICK_TX_TEST */
+
+
 } // bool C64JoystickTX::loop()

@@ -34,11 +34,27 @@ void C64JoystickRX::loop()
 {
     while (hasData())
     {
-        readData( &_packet );
-        _buttonState = _packet.buttonState;
+        // DEBUGLN( "NRF24 has data." );
+#ifdef ERROR_LED
+        digitalWrite( ERROR_LED, HIGH );
+#endif
         
-        sync();        
+        readData( &_packet );        
+        
+#ifdef SERIAL_DEBUG
+        Serial.print( "Received seq=" );
+        Serial.print( _packet.seq, DEC );
+        Serial.print( ", data=" );
+        Serial.println( _packet.buttonState, HEX );
+#endif
+
+        _buttonState = _packet.buttonState;
+        sync();
+
+#ifdef ERROR_LED
+        digitalWrite( ERROR_LED, LOW );
+#endif
+
     }
     
 } // void C64JoystickRX::loop()
-
