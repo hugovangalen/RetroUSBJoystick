@@ -56,10 +56,10 @@ NOTE: All radio communication is *un-encrypted*. If you believe that's a problem
 
 See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
 
-![Remote Server](https://github.com/hugovangalen/RetroUSBJoystick/img/server.png)
+![Remote Server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png)
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
 
-![Remote Server](https://github.com/hugovangalen/RetroUSBJoystick/img/client.png)
+![Remote Server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png)
 For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
 
 ### Connections
