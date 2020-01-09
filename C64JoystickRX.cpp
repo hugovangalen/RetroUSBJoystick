@@ -8,7 +8,7 @@ bool C64JoystickRX::begin( bool irq, uint8_t irqPin )
 {
     C64Joystick::begin();
     
-    if (!init( 0, NRF24_CE, NRF24_SS, NRF24_BITRATE, NRF24_CHANNEL ))
+    if (!init( REMOTE_SERVER_ID, NRF24_CE, NRF24_SS, NRF24_BITRATE, NRF24_CHANNEL ))
     {
         return false;
     }

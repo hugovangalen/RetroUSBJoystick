@@ -7,8 +7,11 @@
 #include <NRFLite.h>
 #include <Joystick.h>
 
-#include "C64Joystick.h"
 #include "NRF24Config.h"
+#include "RetroUSBJoystickConfig.h"
+
+#include "C64Joystick.h"
+#include "C64JoystickPacket.h"
 
 /**
  * This is the RECEIVING part of the C64 Wireless Joystick,
@@ -21,6 +24,7 @@ class C64JoystickRX : public NRFLite, C64Joystick {
 
     public:
         C64JoystickRX() : NRFLite(), C64Joystick() {}
+
         bool begin( bool irq = false, uint8_t irqPin = NRF24_IRQ );
         void loop();
 };
