@@ -90,14 +90,11 @@ void C64Joystick::sync()
  * This method updates button state. returns `true` if anything has changed
  * since last time.
  */
-bool C64Joystick::loop() 
+void C64Joystick::loop() 
 {   
     while (update()) 
     {
         sync();
-        //return true;
     }
     
-    return false;
-      
-} // bool C64Joystick::loop()
+} // void C64Joystick::loop()

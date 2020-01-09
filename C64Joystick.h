@@ -27,9 +27,9 @@ class C64Joystick : public C64JoystickBase {
   public:
     C64Joystick();
     
-    void sync();
     void setup();
-    bool loop();
+    void loop();
+    void sync();
 };
 
 #endif /* _C64_JOYSTICK_H_ */
