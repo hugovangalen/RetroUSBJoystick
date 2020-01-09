@@ -47,6 +47,9 @@ static void radioInterrupt()
 C64JoystickTX::C64JoystickTX( uint8_t deviceId ) : NRFLite(), C64JoystickBase()
 {
     _deviceId = deviceId;
+    
+    _packet.id = _deviceId;
+    _packet.seq = 0;
 }
 
 
@@ -78,3 +81,32 @@ bool C64JoystickTX::begin( bool irq, uint8_t irqPin )
     
 } // begin()
 
+
+/**
+ * This sends the buttonState to the server component.
+ */
+void C64JoystickTX::sync()
+{
+    _packet.seq++;
+    _packet.buttonState = _buttonState;
+    
+    if (!send( REMOTE_SERVER_ID, &_packet, sizeof( _packet )))
+    {
+        DEBUGLN( "Send failure!" );
+    }
+    
+} // void C64JoystickTX::sync()
+
+
+/** 
+ * This method updates button state. returns `true` if anything has changed
+ * since last time.
+ */
+void C64JoystickTX::loop() 
+{   
+    while (update()) 
+    {
+        sync();
+    }
+    
+} // bool C64JoystickTX::loop()
