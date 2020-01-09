@@ -7,28 +7,73 @@ This is a very simple sketch that allows you to connect your "retro" C64 joystic
 - Arduino IDE,
 - Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
 
-## Connections
+
+
+## Wired operation
+
+For wired operation a single Arduino Pro Micro board (or similar) is required. 
+
+### Compilation and installation
+
+See below for instructions on how to connect the joystick to the Arduino. 
+
+Ensure that `LOCAL_CLIENT` is defined in `RetroUSBJoystickConfig.h`, and compile and upload the sketch to the board.
+
+### Connections
 
 Female joystick connector as seen at the end of the cable:
 ```
-                 Joystick    Arduino Micro
+                 Joystick    Arduino Pro Micro
                         1 => N/C
-   1 2 3 4 5            2 => Digital pin 5 (RIGHT)
- +-----------+          3 => Digital pin 4 (LEFT)
- | o o o o o |          4 => Digital pin 3 (DOWN)
-  \ o o o o /           5 => Digital pin 2 (UP)
+   1 2 3 4 5            2 => Digital pin  3 (RIGHT)
+ +-----------+          3 => Digital pin 10 (LEFT)
+ | o o o o o |          4 => Digital pin  9 (DOWN)
+  \ o o o o /           5 => Digital pin  8 (UP)
    +-------+            6 => N/C
     6 7 8 9             7 => GND
                         8 => VCC (+5V)
-                        9 => Digital pin 6 (FIRE)
+                        9 => Digital pin  2 (FIRE)
 ```
 
 
-## Wireless (NRF24)
+## Wireless operation (via NRF24L01)
 
-I am working on a solution that allows you to use these old joysticks *wirelessly*.
+Wireless operation requirements:
+- You need two Arduino boards, and at least one should be based on a ATmega32u4 (i.e. with native USB support). 
+- Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
+Additional dependencies:
+- NRFLite library, https://github.com/dparson55/NRFLite (this can be installed through the Library Manager in Arduino IDE)
 
+The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
+The joystick is physically connected to the "client" board which sends the changes over the radio.
+
+NOTE: All radio communication is *un-encrypted*. If you believe that's a problem, use the wired solution, above.
+
+### Compilation and installation
+
+See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
+
+For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
+
+For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
+
+### Connections
+
+The 8 pin NRF24L01 module should be connected to the following pins on both boards:
+```
+                     NRF24    Arduino Pro Micro
+                         1 => Digital pin 14 (MISO)
+       1 2 3 4           2 => Digital pin 15 (SCK)
+     +---------+         3 => Digital pin A1 (CE)
+     | o o o|o |         4 => GND
+     | o o o o |         5 => Digital pin  7 (IRQ, yet unused though, so can be omitted)
+     +---------+         6 => Digital pin 16 (MOSI)
+       5 6 7 8           7 => Digital pin A0 (CS)
+                         8 => 3.3V
+```
+
+The joystick should be connected to the TX
 ## License
 
 Copyright (C) 2020 Hugo van Galen
