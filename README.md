@@ -8,7 +8,6 @@ This is a very simple sketch that allows you to connect your "retro" C64 joystic
 - Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
 
 
-
 ## Wired operation
 
 For wired operation a single Arduino Pro Micro board (or similar) is required. 
@@ -33,10 +32,11 @@ Female joystick connector as seen at the end of the cable:
   \ o o o o /           5 => Digital pin  8 (UP)
    +-------+            6 => N/C
     6 7 8 9             7 => GND
-                        8 => VCC (+5V)
+                        8 => VCC (+5V) *
                         9 => Digital pin  2 (FIRE)
+                        
+*) VCC +5V is only required if the joystick consumes power. For most micro-switch joysticks, like "The Arcade" for example, this connection is not needed. The connection to GND *is* required.
 ```
-
 
 ## Wireless operation (via NRF24L01)
 
@@ -56,8 +56,10 @@ NOTE: All radio communication is *un-encrypted*. If you believe that's a problem
 
 See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
 
+![Remote Server](https://github.com/hugovangalen/RetroUSBJoystick/img/server.png)
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
 
+![Remote Server](https://github.com/hugovangalen/RetroUSBJoystick/img/client.png)
 For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
 
 ### Connections
