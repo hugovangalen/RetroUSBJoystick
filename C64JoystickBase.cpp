@@ -134,7 +134,8 @@ void C64JoystickBase::begin()
     
 #endif /* C64_USE_PORTS */
     
-    _buttonState = 0;        
+    // Set an initial invalid value to detect changes.
+    _buttonState = 0xFF;        
 }
 
 
@@ -147,23 +148,46 @@ uint8_t C64JoystickBase::read()
 {
 #ifdef C64_USE_PORTS
     
-    uint8_t newState = ~((_C64_PINUDL >> 4 )
-        | (_C64_PINRF << 3));
+    //uint8_t udl = (_C64_PINUDL >> 4); // (0b00000111 & (_C64_PINUDL >> 4));
+    //DEBUG( "UDL: " );
+    //DEBUGBIN( udl );
+    //uint8_t rf =  (_C64_PINRF << 3); // (0b00011000 & (_C64_PINRF << 3));
+    
+    //DEBUG( ", RF: " );
+    //DEBUGBIN( rf );
+    //uint8_t newState = ~( 0b11100000 | udl | rf );
+    
+    uint8_t newState = ~( 0b11100000 | (_C64_PINUDL >> 4) | (_C64_PINRF << 3) );
+    
+    //DEBUG( ", newState: " );
+    //DEBUGBIN( newState );
+    //newState = ~newState;
+    
+    //DEBUG( "buttonState: " );
+    //DEBUGBIN( newState );
+    //DEBUG( "\n" );
     
 #else 
 
     uint8_t newState = 0;
     
-    for (uint8_t iter=0; iter < _C64_MAX_BUTTONS; iter++)
+    for (uint8_t iter = 0; iter < _C64_MAX_BUTTONS; iter++)
     {            
         if (digitalRead( _pins[ iter ] ) == LOW)
         {  
             newState |= (1 << iter);
         }
+        
     }
 
 #endif /* C64_USE_PORTS */
 
+#ifdef C64_JOYSTICK_TEST
+    DEBUG( "newState: " );
+    DEBUGBIN( newState );
+    DEBUG( "\n" );
+#endif
+    
     return newState;
     
 } // read()
@@ -210,6 +234,18 @@ bool C64JoystickBase::update()
     if (newState != _buttonState)
     {
         _buttonState = newState;
+        
+#ifdef SERIAL_DEBUG
+        
+        Serial.print( "buttonState: " );
+        for(uint8_t i = 8 ; i > 0 ; i--)
+        {
+            uint8_t test = 1 << (i-1);
+            Serial.print( _buttonState & test ? "1":"0" );
+        }
+        Serial.println();
+#endif
+        
         return true;
     }
     

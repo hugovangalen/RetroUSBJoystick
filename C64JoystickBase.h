@@ -3,14 +3,37 @@
 
 #include <Arduino.h>
 
+/**
+ * This enables verbosity into the Serial Monitor. It is needed
+ * if you want to debug things.
+ */
 //#define SERIAL_DEBUG
 
+/** 
+ * If `C64_JOYSTICK_TEST` is defined, the button state
+ * is logged to Serial monitor.
+ * 
+ * This requires `SERIAL_DEBUG` to also be defined.
+ */
+//#define C64_JOYSTICK_TEST
+
+
+/**
+ * Debugging macros. These do nothing if SERIAL_DEBUG is 
+ * not defined.
+ */
 #if defined(SERIAL_DEBUG)
   #define DEBUG( a )    Serial.print( a )
   #define DEBUGLN( a )  Serial.println( a )
+  #define DEBUGBIN( a ) for(uint8_t i = 8 ; i > 0 ; i--) {\
+            uint8_t test = 1 << (i-1); \
+            Serial.print( a & test ? "1":"0" ); \
+        }
+
 #else
   #define DEBUG( a )    /* void */
   #define DEBUGLN( a )  /* void */
+  #define DEBUGBIN( a )
 #endif
 
 #define _C64_MAX_BUTTONS   5
@@ -33,7 +56,6 @@
  * Interrupts are experimental. This appears
  * to behave quite buggy.
  */
- 
 //#define C64_USE_INTERRUPTS
 
 /* PB4, PB5, PB6 */
