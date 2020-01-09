@@ -2,6 +2,8 @@
 
 This is a very simple sketch that allows you to connect your "retro" C64 joystick on modern systems via USB. It requires an Arduino Micro (or other boards based on ATmega32u4 with native USB support). 
 
+It is now also possible to connect it wirelessly. This requires NRF24L01 modules. See further down for more info.
+
 ## Dependencies
 
 - Arduino IDE,
@@ -49,6 +51,8 @@ Additional dependencies:
 
 The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
 The joystick is physically connected to the "client" board which sends the changes over the radio.
+
+(I did researched using an ESP8266 module. Initial experiments indicated there is too much processing overhead causing an annoying input lag.)
 
 NOTE: All radio communication is *un-encrypted*. If you believe that's a problem, use the wired solution, above.
 
