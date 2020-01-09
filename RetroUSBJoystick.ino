@@ -1,4 +1,11 @@
-
+/**
+ * RetroUSBJoystick.ino
+ * 
+ * Arduino sketch for connecting an old-school C64 joystick
+ * to a modern machine via USB.
+ * 
+ * See README.md for more information.
+ */
 #include "RetroUSBJoystickConfig.h"
 
 #if defined(REMOTE_CLIENT)
@@ -22,7 +29,7 @@ C64JoystickTX joy( REMOTE_CLIENT );
 /**
  * Instantiate the RX (receive) component.
  */
-C64JoystickRX joy( REMOTE_CLIENT );
+C64JoystickRX joy;
 
 #endif
 
@@ -42,10 +49,15 @@ C64Joystick joy;
 #error You need to enable REMOTE_SERVER, REMOTE_CLIENT or LOCAL_CLIENT. (These are mutually exclusive, you can only enable one.)
 #endif
 
+
+/**
+ * Set-up everything.
+ */
 void setup() 
 {
 #ifdef ERROR_LED 
   pinMode( ERROR_LED, OUTPUT );
+  digitalWrite( ERROR_LED, HIGH );
 #endif
     
 #ifdef SERIAL_DEBUG
@@ -92,19 +104,24 @@ void setup()
   DEBUG( "ControllerRX" );
   #endif
   
-  Serial.println( "v0.9.2 READY" );
+  Serial.println( " v0.9.3 by Hugo van Galen, 2020" );
+#endif
+
+#ifdef ERROR_LED 
+  digitalWrite( ERROR_LED, LOW );
 #endif
 
 } // void setup()
 
 
 
+/**
+ * This just calls `loop` repeatedly in the classes
+ * handling the joystick or wireless connection.
+ */
 void loop() 
 {
-
-#if defined(LOCAL_CLIENT)
   joy.loop();  
-#endif /* LOCAL_CLIENT */
-  
+    
 } // void loop()
 
