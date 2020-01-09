@@ -42,12 +42,4 @@
 #define NRF24_CHANNEL  70
 #endif
 
-struct JoystickPacket
-{
-    uint8_t  radio;
-    uint32_t seq;
-    
-    uint8_t  buttonState;
-};
-
 #endif /* _NRF24_CONFIG_H_ */
