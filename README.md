@@ -17,7 +17,9 @@ For wired operation a single Arduino Pro Micro board (or similar) is required.
 
 See below for instructions on how to connect the joystick to the Arduino. 
 
-Ensure that `LOCAL_CLIENT` is defined in `RetroUSBJoystickConfig.h`, and compile and upload the sketch to the board.
+The code should compile for the wired mode by default but you should ensure that only `LOCAL_CLIENT` is defined in `RetroUSBJoystickConfig.h`.
+
+Compile and upload the sketch to the board.
 
 ### Connections
 
@@ -73,7 +75,11 @@ The 8 pin NRF24L01 module should be connected to the following pins on both boar
                          8 => 3.3V
 ```
 
-The joystick should be connected to the TX
+## Troubleshooting
+
+- If the Arduino cannot initialise the NRF24 module, it will blink the LED repeatedly.
+- In case of problems you can enable "SERIAL_DEBUG" in `C64JoystickBase.h` to see more verbose operation in the Serial Monitor in the Arduino IDE (9600 baud).
+
 ## License
 
 Copyright (C) 2020 Hugo van Galen
