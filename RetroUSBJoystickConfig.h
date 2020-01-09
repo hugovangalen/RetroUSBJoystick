@@ -19,15 +19,20 @@
  * and no NRF24 modules. Enable LOCAL_CLIENT and upload sketch.
  */
 
+
 /** 
- *`LOCAL_CLIENT` if no wireless is required. 
+ * Define `LOCAL_CLIENT` if no wireless is required, or if you 
+ * want to debug joystick connections.
  */
-//#define LOCAL_CLIENT
+#define LOCAL_CLIENT
 
 
 /** 
  * `REMOTE_CLIENT` if this is the SENDER of wireless data, this
  * also sets the clientId for the radio transmissions.
+ * 
+ * 1: Joystick in port 1,
+ * 2: Joystick in port 2.
  */
 //#define REMOTE_CLIENT       1
 
@@ -35,7 +40,7 @@
 /** 
  * `REMOTE_SERVER` if this is the RECEIVER of wireless data. 
  */
-#define REMOTE_SERVER
+//#define REMOTE_SERVER
 
 
 /**
@@ -43,5 +48,12 @@
  * defines the radio ID of the server.
  */
 #define REMOTE_SERVER_ID    64
+
+
+/**
+ * Future stuff to support more than 1 joystick...
+ */
+#define REMOTE_PORT1_ID      1
+#define REMOTE_PORT2_ID      2
 
 #endif /*_RETROUSBJOYSTICK_CONFIG_H_*/
