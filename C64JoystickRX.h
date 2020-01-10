@@ -1,3 +1,11 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: C64JoystickRX.h
+ * Purpose: Handler for the wireless-server (that which receives
+ * data from the wireless-client).
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _C64_JOYSTICK_RX_H_
 #define _C64_JOYSTICK_RX_H_
 

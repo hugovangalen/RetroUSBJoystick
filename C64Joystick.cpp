@@ -1,3 +1,9 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: C64Joystick.cpp
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #include "C64Joystick.h"
 
 C64Joystick::C64Joystick() : C64JoystickBase()

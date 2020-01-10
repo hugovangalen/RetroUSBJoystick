@@ -1,3 +1,11 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: C64JoystickTX.h
+ * Purpose: Handler for the wireless-client (that which sends
+ * data to the wireless-server).
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _C64_JOYSTICK_TX_H_
 #define _C64_JOYSTICK_TX_H_
 

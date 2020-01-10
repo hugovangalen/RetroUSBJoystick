@@ -1,3 +1,10 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: C64Joystick.h
+ * Purpose: Code for the standalone / wired solution.
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _C64_JOYSTICK_H_
 #define _C64_JOYSTICK_H_
 

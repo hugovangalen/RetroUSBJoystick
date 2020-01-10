@@ -1,7 +1,14 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: RetroUSBJoystickConfig.h
+ * Purpose: Compile-time configuration for RetroUSBJoystick. This controls
+ * the operation mode (wired, wireless-server, wireless-client).
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _RETROUSBJOYSTICK_CONFIG_H_
 #define _RETROUSBJOYSTICK_CONFIG_H_
 
-#define ERROR_LED       13
 
 /***
  * Wireless operation requires 2 Arduino boards (tested
@@ -55,5 +62,14 @@
  */
 #define REMOTE_PORT1_ID      1
 #define REMOTE_PORT2_ID      2
+
+
+
+/**
+ * If `ERROR_LED` is defined, it can indicate problems by 
+ * blinking or staying lit.
+ */
+#define ERROR_LED       13
+
 
 #endif /*_RETROUSBJOYSTICK_CONFIG_H_*/

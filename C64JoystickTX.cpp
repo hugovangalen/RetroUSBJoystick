@@ -1,4 +1,10 @@
-#include "C64JoystickTX.h"
+/**
+ * Project: RetroUSBJoystick
+ * File: C64JoystickRX.cpp
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
+ #include "C64JoystickTX.h"
 
 /**
  * EXPERIMENTAL IRQ STUFF

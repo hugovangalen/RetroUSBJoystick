@@ -1,10 +1,20 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: NRF24Config.h
+ * Purpose: NRF24 related compile-time configuration for the RetroUSBJoystick. 
+ * 
+ * This is only relevant for the wireless-client and wireless-server.
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _NRF24_CONFIG_H_
 #define _NRF24_CONFIG_H_
 
 /**
- * Configuration
+ * IRQ is not used at this point.
  */
 //#define NRF24_SUPPORT_IRQ
+
 
 /**
  * PIN assignments.

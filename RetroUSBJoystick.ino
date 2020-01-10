@@ -1,10 +1,14 @@
 /**
- * RetroUSBJoystick.ino
+ * Project: RetroUSBJoystick
+ * File: RetroUSBJoystick.ino
  * 
  * Arduino sketch for connecting an old-school C64 joystick
- * to a modern machine via USB.
+ * to a modern machine via USB. Supports a wired and wireless
+ * operation.
  * 
  * See README.md for more information.
+ * 
+ * Copyright: Hugo van Galen, 2020
  */
 #include "RetroUSBJoystickConfig.h"
 

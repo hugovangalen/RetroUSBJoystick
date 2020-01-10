@@ -1,3 +1,11 @@
+/**
+ * Project: RetroUSBJoystick
+ * File: C64JoystickBase.h
+ * Purpose: Code that polls the joystick. This is used by the standalone/wired
+ * operation mode, and the wireless-client.
+ * 
+ * Copyright: Hugo van Galen, 2020
+ */
 #ifndef _C64_JOYSTICK_BASE_H_
 #define _C64_JOYSTICK_BASE_H_
 
