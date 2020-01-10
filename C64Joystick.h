@@ -13,7 +13,9 @@
 #include <Arduino.h>
 #include <Joystick.h>
 
-#define _C64_HID_ID       0x03
+#define _C64_HID_ID1    0x64
+#define _C64_HID_ID2    0x65
+#define _C64_HID_ID3    0x66
 
 #define _C64_LEFT_X        0
 #define _C64_CENTER_X    512
@@ -25,18 +27,42 @@
 
 #define _C64_FIRE_BUTTON   0
 
-class C64Joystick : public C64JoystickBase {
+//typedef Joystick_* JoystickPointer;
+
+class C64Joystick : public C64JoystickBase, Joystick_ {
   
   private:
-    Joystick_ *_controller;
     uint8_t _lastSentState = 0;
     
   public:
-    C64Joystick();
+    C64Joystick( uint8_t _id ) : Joystick_( _id,
+        JOYSTICK_TYPE_GAMEPAD,
+        1,      // button count
+        0,      // hat switch count
+        
+        true,   // x axis
+        true,   // y
+        false,  // z
+        
+        false,  // rx axis
+        false,  // ry
+        false,  // rz
+        
+        false, // rudder
+        false, // accelerometer
+        false, // brake
+        false  // steering
+    ) {}
     
     void setup();
     void loop();
     void sync();
+    
+    void begin() 
+    {
+        C64JoystickBase::begin();
+        Joystick_::begin( false );
+    }
 };
 
 #endif /* _C64_JOYSTICK_H_ */

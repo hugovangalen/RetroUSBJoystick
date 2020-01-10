@@ -26,12 +26,13 @@
  * which could handle more than 1 device connected over 
  * the radio.
  */
-class C64JoystickRX : public NRFLite, C64Joystick {
+class C64JoystickRX : public NRFLite {
     protected:
         JoystickPacket _packet;
+        
 
     public:
-        C64JoystickRX() : NRFLite(), C64Joystick() {}
+        C64JoystickRX() : NRFLite() {}
 
         bool begin( bool irq = false, uint8_t irqPin = NRF24_IRQ );
         void loop();

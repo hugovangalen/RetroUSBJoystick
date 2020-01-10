@@ -80,7 +80,7 @@ void setup()
   Serial.print( "ControllerRX" );
   #endif
   
-  Serial.println( " v0.9.3 by Hugo van Galen, 2020" );
+  Serial.println( " v0.9.4 by Hugo van Galen, 2020" );
 #endif
   
 

@@ -31,7 +31,7 @@
  * Define `LOCAL_CLIENT` if no wireless is required, or if you 
  * want to debug joystick connections.
  */
-#define LOCAL_CLIENT
+//#define LOCAL_CLIENT
 
 
 /** 
@@ -47,7 +47,14 @@
 /** 
  * `REMOTE_SERVER` if this is the RECEIVER of wireless data. 
  */
-//#define REMOTE_SERVER
+#define REMOTE_SERVER
+
+/**
+ * The server can receive for more than 1 joystick. Enable this
+ * to expose 2 joysticks to the host.
+ */
+#define DUAL_JOYSTICK_MODE
+
 
 
 /**

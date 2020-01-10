@@ -15,7 +15,7 @@
  * This enables verbosity into the Serial Monitor. It is needed
  * if you want to debug things.
  */
-//#define SERIAL_DEBUG
+#define SERIAL_DEBUG
 
 /** 
  * If `C64_JOYSTICK_TEST` is defined, the button state
@@ -96,6 +96,7 @@ class C64JoystickBase {
     uint8_t _buttonState = 0;
     
   public:
+    
 #ifdef C64_USE_PORTS
     C64JoystickBase() 
     {
