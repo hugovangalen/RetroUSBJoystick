@@ -6,62 +6,114 @@
  */
 #include "C64Joystick.h"
 
-void C64Joystick::setup() 
+void C64Joystick::begin() 
 {
     C64JoystickBase::begin();
+    
+    setXAxisRange( _C64_LEFT_X, _C64_RIGHT_X );
+    setYAxisRange( _C64_UP_Y, _C64_DOWN_Y );
+    
+    /*
+    setRxAxisRange( _C64_LEFT_X, _C64_RIGHT_X );
+    setRyAxisRange( _C64_UP_Y, _C64_DOWN_Y );
+    
+    setRudderRange( _C64_LEFT_X, _C64_RIGHT_X );
+    setSteeringRange( _C64_LEFT_X, _C64_RIGHT_X ); 
+
+    setBrakeRange( _C64_LEFT_X, _C64_RIGHT_X );
+    setThrottleRange( _C64_LEFT_X, _C64_RIGHT_X );
+    */
     Joystick_::begin( false );
 }
+
+//#define SET_HORZ( a )       setXAxis( a ); setRxAxis( a ); setSteering( a ); setRudder( a )
+//#define SET_VERT( a )       setYAxis( a ); setRyAxis( a ); setThrottle( a ); setBrake( a )
+#define SET_HORZ( a )       setXAxis( a )
+#define SET_VERT( a )       setYAxis( a )
+
+//#define SET_HORZ( a )       
+//#define SET_VERT( a )
+
 
 
 void C64Joystick::sync()
 {
-    if (_lastSentState == _buttonState)
+    if (_lastSentState[0] == _buttonState[0]
+        && _lastSentState[1] == _buttonState[1])
     {
         // Nothing to do...
         return;
     }
     
-    
+    _lastSentState[0] = _buttonState[0];
+    _lastSentState[1] = _buttonState[1];
+
     DEBUG( "JoyState> " );
-    
-    if (_buttonState & C64_LEFT)
+    // DEBUGBIN( _buttonState[0] );
+
+      
+    if (_buttonState[0] & C64_LEFT)
     {
-        setXAxis( _C64_LEFT_X );
         DEBUG( "LEFT " );
+        
+        SET_HORZ( _C64_LEFT_X );
+        
+setButton( _C64_BUTTON_LEFT,  1 );
+setButton( _C64_BUTTON_RIGHT, 0 );
     }
-    else if (_buttonState & C64_RIGHT)
+    else if (_buttonState[0] & C64_RIGHT)
     { 
-        setXAxis( _C64_RIGHT_X );
         DEBUG( "RGHT " );
+        
+        SET_HORZ( _C64_RIGHT_X );
+        
+setButton( _C64_BUTTON_LEFT,  0 );
+setButton( _C64_BUTTON_RIGHT, 1 );
+
     }
     else
     {
-        setXAxis( _C64_CENTER_X );
         DEBUG( "---- " );
+    
+        SET_HORZ( _C64_CENTER_X );  
+        
+setButton( _C64_BUTTON_LEFT,  0 );
+setButton( _C64_BUTTON_RIGHT, 0 );
+
     }
 
-    if (_buttonState & C64_UP)
+    
+    
+    if (_buttonState[0] & C64_UP)
     {
-        setYAxis( _C64_UP_Y );
         DEBUG( "UP " );
+        
+        SET_VERT( _C64_UP_Y );
+setButton( _C64_BUTTON_UP,   1 );
+setButton( _C64_BUTTON_DOWN, 0 );
     }
-    else if (_buttonState & C64_DOWN)
+    else if (_buttonState[0] & C64_DOWN)
     {
-        setYAxis( _C64_DOWN_Y );
         DEBUG( "DN " );
+        
+        SET_VERT( _C64_DOWN_Y );
+setButton( _C64_BUTTON_UP,   0 );
+setButton( _C64_BUTTON_DOWN, 1 );
     }
     else
     {
-        setYAxis( _C64_CENTER_Y );
         DEBUG( "-- " );
+        
+        SET_VERT( _C64_CENTER_Y );
+setButton( _C64_BUTTON_UP,   0 );
+setButton( _C64_BUTTON_DOWN, 0 );
     }
 
-    DEBUGLN( _buttonState & C64_FIRE ? "FIRE" : "----" );
+    DEBUGLN( _buttonState[0] & C64_FIRE ? "FIRE" : "----" );
     
-    setButton( _C64_FIRE_BUTTON, _buttonState & C64_FIRE ? 1 : 0 );
+    setButton( _C64_BUTTON_FIRE, _buttonState[0] & C64_FIRE ? 1 : 0 );
     sendState();
     
-    _lastSentState = _buttonState;
     
 } // void C64Joystick::sync()
 
