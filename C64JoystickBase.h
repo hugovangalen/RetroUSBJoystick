@@ -15,7 +15,8 @@
  * This enables verbosity into the Serial Monitor. It is needed
  * if you want to debug things.
  */
-#define SERIAL_DEBUG
+//#define SERIAL_DEBUG
+
 
 /** 
  * If `C64_JOYSTICK_TEST` is defined, the button state
@@ -44,8 +45,6 @@
   #define DEBUGBIN( a )
 #endif
 
-#define _C64_MAX_BUTTONS   5
-
 #define _C64_PIN_UP        8
 #define _C64_PIN_DOWN      9
 #define _C64_PIN_LEFT     10
@@ -66,6 +65,10 @@
  */
 //#define C64_USE_INTERRUPTS
 
+/**
+ * JOYSTICK CONNECTIONS
+ */
+
 /* PB4, PB5, PB6 */
 #define _C64_PORTUDL   PORTB
 #define _C64_DDRUDL    DDRB
@@ -78,6 +81,19 @@
 #define _C64_PINRF     PIND
 #define _C64_MASKRF    0b00000011
 
+
+/**
+ * TODO: EXTRA BUTTONS ON PCB BOARD for additional functions. 
+ * 
+ * This is mainly for TheC64.
+ */
+#define C64_EXTRA_BUTTONS
+#ifdef C64_EXTRA_BUTTONS
+#endif
+
+/**
+ * Interrupt stuff is not quite working out well.
+ */
 #define _C64_PCINTU    PCINT4
 #define _C64_PCINTD    PCINT5
 #define _C64_PCINTL    PCINT6
@@ -86,27 +102,32 @@
 #define _C64_INTR      INT1
 
 class C64JoystickBase {
-  private:
+  private:      
+#ifdef C64_USE_INTERRUPTS
     bool    _irq;
+#endif
+    
 #ifndef C64_USE_PORTS
     uint8_t _pins[ _C64_MAX_BUTTONS ];
 #endif
     
   protected:
-    uint8_t _buttonState = 0;
+    uint8_t _buttonState[2] = { 0, 0 };
     
   public:
     
 #ifdef C64_USE_PORTS
     C64JoystickBase() 
     {
+#ifdef C64_USE_INTERRUPTS
         _irq = true;
-                
+#endif
     } // constructor
-    
 #else
     C64JoystickBase( 
+#ifdef C64_USE_INTERRUPTS
         bool irq = false,
+#endif
         uint8_t up = _C64_PIN_UP, 
         uint8_t down = _C64_PIN_DOWN, 
         uint8_t left = _C64_PIN_LEFT, 
@@ -118,17 +139,22 @@ class C64JoystickBase {
         _pins[ 2 ] = left;
         _pins[ 3 ] = right;
         _pins[ 4 ] = fire;
-        
+#ifdef C64_USE_INTERRUPTS
         _irq = irq;
+#endif
     } // constructor
 #endif
 
     void begin();
-    uint8_t read();
     bool update(); 
-    uint8_t get();
     
+    uint8_t read();
+    uint8_t get();
     void set( uint8_t state );
+    
+    uint8_t readExtra();
+    uint8_t getExtra();
+    void setExtra( uint8_t state );
 };
 
 #endif /* _C64_JOYSTICK_BASE_H_ */

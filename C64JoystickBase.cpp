@@ -6,89 +6,6 @@
  */
 #include "C64JoystickBase.h"
 
-
-/**
- * The `MAX_DATA_QUEUE` determines the size of the 
- * ring-buffer to catch changes while we are 
- * processing them.
- * 
- * The value can probably be tweaked way down.
- */
-#define MAX_DATA_QUEUE 1024
-
-
-/**
- * The `_pointer` is only assigned when we're 
- * configured to use interrupts.
- */
-static C64JoystickBase *_pointer = NULL;
-
-
-/**
- * Ring-buffer...
- */
-volatile uint32_t _dataWriteIndex = 0;
-volatile uint32_t _dataReadIndex = 0;
-uint8_t _dataQueue[ MAX_DATA_QUEUE ];
-
-
-/**
- * This initialises the data-queue which is used to
- * catch pin changes while we may be busy processing
- * them.
- */
-void clearDataQueue()
-{
-    memset( _dataQueue, 0xFF, sizeof(_dataQueue) );
-    
-    _dataReadIndex = 0;
-    _dataWriteIndex = 0;
-}
-
-
-#ifdef C64_USE_INTERRUPTS
-
-volatile bool _inHandler = false;
-
-/**
- * This will trigger an update of the button state.
- */
-static void interruptHandler()
-{
-    if (_inHandler) return;
-    
-    _inHandler = true;
-    
-    _dataQueue[ _dataWriteIndex ] = _pointer->read();
-    _dataWriteIndex++;
-
-    if (_dataWriteIndex == MAX_DATA_QUEUE)
-    {
-        _dataWriteIndex = 0;
-    }
-    
-    _inHandler = false;
-}
-
-
-ISR(PCINT0_vect)
-{
-    interruptHandler();
-}
-
-ISR(INT0_vect)
-{
-    interruptHandler();
-}
-
-ISR(INT1_vect)
-{
-    interruptHandler();
-}
-
-
-#endif
-
 void C64JoystickBase::begin()
 {
 #ifndef C64_USE_PORTS
@@ -97,31 +14,18 @@ void C64JoystickBase::begin()
         pinMode( _pins[ iter ], INPUT_PULLUP );
     }
 
-    if (_irq) 
-    {
-        _pointer = this;    
-        /* for (uint8_t iter=0; iter < _C64_MAX_BUTTONS; iter++)
-        {
-            attachInterrupt( digitalPinToInterrupt( _pins[iter] ), interruptHandler, CHANGE );
-        } */
-    }
-    else
-    {
-        _pointer = NULL;
-    }
-    
 #else
-    _pointer = this;    
-    
     _C64_DDRUDL |= _C64_MASKUDL;
     _C64_PORTUDL |= _C64_MASKUDL; // enable pull-ups
     
     _C64_DDRRF |= _C64_MASKRF;
     _C64_PORTRF |= _C64_MASKRF;
 
-    
 #ifdef C64_USE_INTERRUPTS
-    clearDataQueue();
+    
+    /** 
+     * Experimental interrupts don't quite work out.
+     */
     
     cli();
     
@@ -141,14 +45,33 @@ void C64JoystickBase::begin()
 #endif /* C64_USE_PORTS */
     
     // Set an initial invalid value to detect changes.
-    _buttonState = 0xFF;        
+    _buttonState[0] = 0xFF;        
+    _buttonState[1] = 0xFF;
 }
 
 
 uint8_t C64JoystickBase::get()
 {
-    return _buttonState;
+    return _buttonState[0];
 }
+
+uint8_t C64JoystickBase::getExtra()
+{
+    return _buttonState[1];
+}
+
+/**
+ * This reads the extra button state.
+ */
+uint8_t C64JoystickBase::readExtra()
+{
+#ifdef C64_USE_PORTS
+    uint8_t newState = 0;
+    return newState;
+#endif /* C64_USE_PORTS */
+    
+} // uint8_t C64JoystickBase::readExtra()
+
 
 uint8_t C64JoystickBase::read() 
 {
@@ -196,7 +119,7 @@ uint8_t C64JoystickBase::read()
     
     return newState;
     
-} // read()
+} // uint8_t C64JoystickBase::read() 
 
 
 
@@ -206,58 +129,49 @@ uint8_t C64JoystickBase::read()
  */
 bool C64JoystickBase::update() 
 {
+    bool ret = false;
     uint8_t newState;
     
-#ifndef C64_USE_INTERRUPTS
-    
     newState = read();
-    
-#else
-    
-    if (_irq)
+    if (newState != _buttonState[0])
     {
-        newState = _dataQueue[ _dataReadIndex ];
-        if (newState == 0xFF)
-        {
-            return false;
-        }
-        
-        _dataQueue[ _dataReadIndex ] = 0xFF; // invalidate after use
-        _dataReadIndex++;
-        
-        if (_dataReadIndex == MAX_DATA_QUEUE)
-        {
-            _dataReadIndex = 0;
-        }
-    }
-    else
-    {
-        newState = read();
+        _buttonState[0] = newState;        
+        ret = true;
     }
     
-#endif /* C64_USE_INTERRUPTS */
-
-    if (newState != _buttonState)
+    newState = readExtra();
+    if (newState != _buttonState[1])
     {
-        _buttonState = newState;
-        
-#ifdef SERIAL_DEBUG
-        
+        _buttonState[1] = newState;
+        ret = true;
+    }
+    
+    if (ret)
+    {
+        // If this delay is not added, we somehow
+        // receive 3 events (DOWN, RELEASE and DOWN again)
+        //
+        // Possibly because of the lack of debouncing logic; but,
+        // with "The Arcade" joystick anyway, strangely enough 
+        // this only happens to the the directional buttons; the 
+        // FIRE button works fine.
+        delayMicroseconds( 10000 );
+    }
+    
+#ifdef SERIAL_DEBUG   
+    if (ret)
+    {
         Serial.print( "buttonState: " );
-        for(uint8_t i = 8 ; i > 0 ; i--)
-        {
-            uint8_t test = 1 << (i-1);
-            Serial.print( _buttonState & test ? "1":"0" );
-        }
+        DEBUGBIN( _buttonState[0] );
+        Serial.print( " " );
+        DEBUGBIN( _buttonState[1] );
         Serial.println();
-#endif
-        
-        return true;
     }
+#endif
     
-    return false;
+    return ret;
     
-} // bool update()
+} // bool C64JoystickBase::update()
 
 
 
@@ -267,6 +181,10 @@ bool C64JoystickBase::update()
  */
 void C64JoystickBase::set( uint8_t state )
 {
-    _buttonState = state;
+    _buttonState[0] = state;
 }
 
+void C64JoystickBase::setExtra( uint8_t state )
+{
+    _buttonState[1] = state;
+}
