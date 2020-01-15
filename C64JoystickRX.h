@@ -21,6 +21,8 @@
 #include "C64Joystick.h"
 #include "C64JoystickPacket.h"
 
+typedef C64Joystick* JoystickPointer;
+
 /**
  * This is the RECEIVING part of the C64 Wireless Joystick,
  * which could handle more than 1 device connected over 
@@ -29,10 +31,25 @@
 class C64JoystickRX : public NRFLite {
     protected:
         JoystickPacket _packet;
-        
 
+#ifdef DUAL_JOYSTICK_MODE
+        JoystickPointer _controller1;
+        JoystickPointer _controller2;
+#else
+        JoystickPointer _controller;
+#endif
+            
+
+        
     public:
-        C64JoystickRX() : NRFLite() {}
+        C64JoystickRX() : NRFLite() {
+#ifdef DUAL_JOYSTICK_MODE
+            _controller1 = new C64Joystick( _C64_HID_ID1 );
+            _controller2 = new C64Joystick( _C64_HID_ID2 );
+#else
+            _controller = new C64Joystick( _C64_HID_ID1 );
+#endif
+        }
 
         bool begin( bool irq = false, uint8_t irqPin = NRF24_IRQ );
         void loop();

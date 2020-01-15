@@ -6,16 +6,6 @@
  */
 #include "C64JoystickRX.h"
 
-#ifdef DUAL_JOYSTICK_MODE
-    Joystick_ _controller1( _C64_HID_ID1 );
-    Joystick_ _controller2( _C64_HID_ID2 );
-    Joystick_ _controller3( _C64_HID_ID3 );
-    // C64Joystick _controller3( _C64_HID_ID3 );
-#else
-    C64Joystick _controller( _C64_HID_ID1 )
-#endif
-            
-
 /**
  * This initialises the radio. If all looks okay, this will
  * return `true`.
@@ -23,16 +13,14 @@
 bool C64JoystickRX::begin( bool irq, uint8_t irqPin ) 
 {
 #ifdef DUAL_JOYSTICK_MODE
-    DEBUGLN( "C64JoystickRX::begin DUAL MODE" );
+    DEBUGLN( "C64JoystickRX::begin DUAL" );
     
-    _controller1.begin(false);
-    _controller2.begin(false);
-    _controller3.begin(false);
-    // _controller3.begin();
+    _controller1->begin();
+    _controller2->begin();
 #else
     
-    DEBUGLN( "C64JoystickRX::begin SINGLE MODE" );
-    _controller.begin(false);
+    DEBUGLN( "C64JoystickRX::begin SINGLE" );
+    _controller->begin();
     
 #endif
     
@@ -74,10 +62,17 @@ void C64JoystickRX::loop()
         Serial.print( "Received seq=" );
         Serial.print( _packet.seq, DEC );
         Serial.print( ", data=" );
-        Serial.println( _packet.buttonState, HEX );
+        Serial.print( _packet.buttonState[0], HEX );
+        Serial.print( " " );
+        Serial.println( _packet.buttonState[1], HEX );
 #endif
 
 #ifdef DUAL_JOYSTICK_MODE
+        _controller1->set( _packet.buttonState[0] );
+        _controller1->sync();
+        
+        _controller2->set( _packet.buttonState[0] );
+        _controller2->sync();
         
         // The data could be for joystick#1 or joystick#2.
         if (_packet.id == 1)
@@ -91,8 +86,8 @@ void C64JoystickRX::loop()
 //            _controller2.sync();
         }
 #else
-        _controller.set( _packet.buttonState );
-        _controller.sync();
+        _controller->set( _packet.buttonState[0] );
+        _controller->sync();
 #endif
 
 #ifdef ERROR_LED
