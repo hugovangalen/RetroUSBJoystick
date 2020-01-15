@@ -115,16 +115,21 @@ void C64JoystickTX::sync()
     if (_txCount < 16)
     { 
     */
-    if (_buttonState != _packet.buttonState)
+    if ((_buttonState[0] != _packet.buttonState[0])
+        || (_buttonState[1] != _packet.buttonState[1]))
     {
         _packet.seq++;
-        _packet.buttonState = _buttonState;
+        
+        _packet.buttonState[ 0 ] = _buttonState[ 0 ];
+        _packet.buttonState[ 1 ] = _buttonState[ 1 ];
         
 #ifdef SERIAL_DEBUG
         Serial.print( "Sending seq=" );
         Serial.print( _packet.seq, DEC );
         Serial.print( ", data=" );
-        Serial.println( _packet.buttonState, HEX );
+        Serial.print( _packet.buttonState[0], HEX );
+        Serial.print( " " );
+        Serial.println( _packet.buttonState[1], HEX );
 #endif
         
         if (!send( REMOTE_SERVER_ID, &_packet, sizeof( _packet )))
@@ -165,17 +170,34 @@ void C64JoystickTX::loop()
     for (uint8_t testState = 0b00000001; testState <= 0b00010000; testState = testState << 1)
     {
         // Send button press:
-        _buttonState = testState;
+        _buttonState[ 0 ] = testState;
         
         sync();
         delay( 500 );
         
         // Send release:
-        _buttonState = 0;
+        _buttonState[ 0 ] = 0;
         sync();
         
         delay( 1000 );
     }
+    
+    for (uint8_t testState = 0b00000001; testState <= 0b01000000; testState = testState << 1)
+    {
+        // Send button press:
+        _buttonState[ 1 ] = testState;
+        
+        sync();
+        delay( 500 );
+        
+        // Send release:
+        _buttonState[ 1 ] = 0;
+        sync();
+        
+        delay( 1000 );
+    }
+    
+    
 #else
 
     while (update()) 
