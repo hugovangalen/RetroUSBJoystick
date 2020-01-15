@@ -13,7 +13,8 @@ struct JoystickPacket
 {
     uint8_t  id;    // client identification (radio ID)
     uint32_t seq;   // sequence number
-    uint8_t  buttonState;
+    
+    uint8_t  buttonState[2]; // two bytes now for additional buttons
 };
 
 #endif /* _C64JOYSTICK_PACKET_H_ */
