@@ -4,6 +4,13 @@ This is a very simple sketch that allows you to connect your "retro" C64 joystic
 
 It is now also possible to connect it wirelessly. This requires NRF24L01 modules. See further down for more info.
 
+## Pre-compiled binaries
+
+I have added pre-compiled .hex files:
+- For wired operation, download [the standalone version](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_STANDALONE.ino.leonardo.hex).
+- For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex).
+
+
 ## Dependencies
 
 - Arduino IDE,
