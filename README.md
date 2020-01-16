@@ -6,18 +6,18 @@ To get things working with the TheC64, some modifications in the Joystick librar
 
 It is now also possible to connect it wirelessly. This requires NRF24L01 modules. See further down for more info.
 
-### Pre-compiled binaries
-
-For your convenience I have added pre-compiled .hex files. This is useful if you don't want to modify the Joystick library and mess around in `boards.txt`.
-- For wired operation, download [the standalone version](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_STANDALONE.ino.leonardo.hex).
-- For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex).
-
 
 ## Dependencies
 
 - Arduino IDE,
 - Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
 - NRFLite library, https://github.com/dparson55/NRFLite (for wireless operation only) This can be installed through the Library Manager in Arduino IDE.
+
+### Pre-compiled binaries
+
+For your convenience I have added pre-compiled .hex files. This is useful if you don't want to modify the Joystick library and mess around in `boards.txt`.
+- For wired operation, download [the standalone version](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_STANDALONE.ino.leonardo.hex).
+- For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex).
 
 
 ## Wired operation
