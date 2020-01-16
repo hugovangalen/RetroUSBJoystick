@@ -2,11 +2,13 @@
 
 This is a very simple sketch that allows you to connect your "retro" C64 joystick on modern systems via USB. It requires an Arduino Micro (or other boards based on ATmega32u4 with native USB support). 
 
+To get things working with the TheC64, some modifications in the Joystick library and `boards.txt` are required. If you don't want to mess around with that, you can download pre-compiled versions, below.
+
 It is now also possible to connect it wirelessly. This requires NRF24L01 modules. See further down for more info.
 
 ### Pre-compiled binaries
 
-If you don't want to modify other libraries and mess around in `boards.txt` I have added some pre-compiled .hex files:
+For your convenience I have added pre-compiled .hex files. This is useful if you don't want to modify the Joystick library and mess around in `boards.txt`.
 - For wired operation, download [the standalone version](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_STANDALONE.ino.leonardo.hex).
 - For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex).
 
@@ -15,6 +17,7 @@ If you don't want to modify other libraries and mess around in `boards.txt` I ha
 
 - Arduino IDE,
 - Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
+- NRFLite library, https://github.com/dparson55/NRFLite (for wireless operation only) This can be installed through the Library Manager in Arduino IDE.
 
 
 ## Wired operation
@@ -54,7 +57,6 @@ Wireless operation requirements:
 - Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
 Additional dependencies:
-- NRFLite library, https://github.com/dparson55/NRFLite (this can be installed through the Library Manager in Arduino IDE)
 
 The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
 The joystick is physically connected to the "client" board which sends the changes over the radio.
