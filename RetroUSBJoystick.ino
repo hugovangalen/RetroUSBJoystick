@@ -110,7 +110,7 @@ void setup()
 #if defined(LOCAL_CLIENT)
 
   // Wired operation.
-  joy.setup();
+  joy.begin();
   
 #endif /* LOCAL_CLIENT */
   
