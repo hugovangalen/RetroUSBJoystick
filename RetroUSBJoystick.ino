@@ -66,7 +66,7 @@ void setup()
     
 #ifdef SERIAL_DEBUG
   Serial.begin( 9600 );
-  //while(!Serial);
+  while(!Serial);
   
   #if defined(LOCAL_CLIENT)
   Serial.print( "LocalClient " );
