@@ -77,7 +77,13 @@
  * If `ERROR_LED` is defined, it can indicate problems by 
  * blinking or staying lit.
  */
-#define ERROR_LED       13
+#define ERROR_LED       17
 
+
+/**
+ * If this is defined, TXLED0/TXLED1 will be used to
+ * indicate activity when sending joystick updates.
+ */
+#define ACTIVITY_ON_TX  
 
 #endif /*_RETROUSBJOYSTICK_CONFIG_H_*/
