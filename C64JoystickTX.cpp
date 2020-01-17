@@ -95,10 +95,6 @@ bool C64JoystickTX::begin( bool irq, uint8_t irqPin )
  */
 void C64JoystickTX::sync()
 {
-#ifdef ERROR_LED
-    digitalWrite( ERROR_LED, HIGH );
-#endif
-
     /*
     // Send the last operation multiple times to ensure
     // it reaches the other side.
@@ -117,7 +113,11 @@ void C64JoystickTX::sync()
     */
     if ((_buttonState[0] != _packet.buttonState[0])
         || (_buttonState[1] != _packet.buttonState[1]))
-    {
+    {   
+#ifdef ACTIVITY_ON_TX 
+        TXLED1;
+#endif
+
         _packet.seq++;
         
         _packet.buttonState[ 0 ] = _buttonState[ 0 ];
@@ -136,9 +136,14 @@ void C64JoystickTX::sync()
         {
             _failedTx++;
         
-#ifdef SERIAL_DEBUG
+   
+
+ #ifdef SERIAL_DEBUG
             if (_failedTx > 16)
             {
+#ifdef ERROR_LED
+                digitalWrite( ERROR_LED, HIGH );
+#endif
                 Serial.println( "NRF24 send failed more than 16 times!" );
                 _failedTx = 0;
             }
@@ -147,11 +152,20 @@ void C64JoystickTX::sync()
         }
         else
         {
-            _failedTx = 0;
 #ifdef ERROR_LED
-            digitalWrite( ERROR_LED, LOW );
+            if (_failedTx > 16)
+            {
+                digitalWrite( ERROR_LED, LOW );
+            }
 #endif
+            _failedTx = 0;
+        
         }
+
+#ifdef ACTIVITY_ON_TX 
+        TXLED0;
+#endif
+        
     }
     
 } // void C64JoystickTX::sync()
