@@ -9,7 +9,7 @@
 #ifndef _RETROUSBJOYSTICK_CONFIG_H_
 #define _RETROUSBJOYSTICK_CONFIG_H_
 
-#define RETROUSBJOYSTICK_VERSION "0.9.5"
+#define RETROUSBJOYSTICK_VERSION "0.9.5-20200118a"
 
 /***
  * Wireless operation requires 2 Arduino boards (tested
