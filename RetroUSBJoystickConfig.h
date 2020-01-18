@@ -9,6 +9,7 @@
 #ifndef _RETROUSBJOYSTICK_CONFIG_H_
 #define _RETROUSBJOYSTICK_CONFIG_H_
 
+#define RETROUSBJOYSTICK_VERSION "0.9.5"
 
 /***
  * Wireless operation requires 2 Arduino boards (tested
@@ -27,11 +28,17 @@
  */
 
 
+/**
+ * Enable extra button support (this is mainly for the TheC64
+ * machines to access the additional functions.
+ */
+//#define C64_EXTRA_BUTTONS
+
 /** 
  * Define `LOCAL_CLIENT` if no wireless is required, or if you 
  * want to debug joystick connections.
  */
-//#define LOCAL_CLIENT
+#define LOCAL_CLIENT
 
 
 /** 
@@ -47,16 +54,7 @@
 /** 
  * `REMOTE_SERVER` if this is the RECEIVER of wireless data. 
  */
-#define REMOTE_SERVER
-
-
-
-/**
- * Enable extra button support (this is mainly for the TheC64
- * machines to access the additional functions.
- */
-#define C64_EXTRA_BUTTONS
-
+//#define REMOTE_SERVER
 
 /**
  * The server can receive for more than 1 joystick. Enable this
@@ -80,6 +78,7 @@
  */
 #define REMOTE_PORT1_ID      1
 #define REMOTE_PORT2_ID      2
+
 
 
 
