@@ -8,18 +8,27 @@
 
 void C64JoystickBase::begin()
 {
-#ifndef C64_USE_PORTS
-    for (uint8_t iter=0; iter < _C64_MAX_BUTTONS; iter++)
-    {
-        pinMode( _pins[ iter ], INPUT_PULLUP );
-    }
-
-#else
     _C64_DDRUDL |= _C64_MASKUDL;
     _C64_PORTUDL |= _C64_MASKUDL; // enable pull-ups
     
     _C64_DDRRF |= _C64_MASKRF;
     _C64_PORTRF |= _C64_MASKRF;
+
+#ifdef C64_EXTRA_BUTTONS
+    
+    _C64_DDR1235 |= _C64_MASK1235;
+    _C64_PORT1235 |= _C64_MASK1235;
+    
+    _C64_DDR4 |= _C64_MASK4;
+    _C64_PORT4 |= _C64_MASK4; // enable pull-ups -- doesn't work?!
+    digitalWrite( 5, 1 ); // force pull-up...
+     
+    _C64_DDR67 |= _C64_MASK67;    
+    _C64_PORT67 |= _C64_MASK67;
+    digitalWrite( A3, 1 );
+    digitalWrite( A2, 1 );
+    
+#endif
 
 #ifdef C64_USE_INTERRUPTS
     
@@ -42,8 +51,6 @@ void C64JoystickBase::begin()
     
 #endif /* C64_USE_INTERRUPTS */
     
-#endif /* C64_USE_PORTS */
-    
     // Set an initial invalid value to detect changes.
     _buttonState[0] = 0xFF;        
     _buttonState[1] = 0xFF;
@@ -60,57 +67,43 @@ uint8_t C64JoystickBase::getExtra()
     return _buttonState[1];
 }
 
+
 /**
  * This reads the extra button state.
  */
 uint8_t C64JoystickBase::readExtra()
 {
-#ifdef C64_USE_PORTS
-    uint8_t newState = 0;
-    return newState;
-#endif /* C64_USE_PORTS */
+    uint8_t newState = 0;    
+    uint8_t temp = _C64_PIN1235;
     
+    if (temp & 0b10000000) newState |= 0b00001000; // button 5
+    temp = temp & 0b00011100;
+    newState |= (temp >> 2); 
+    
+    temp = _C64_PIN4 & 0b01000000;
+    newState |= (temp >> 2);
+    
+    temp = _C64_PIN67 & 0b00110000;
+    newState |= (temp << 1);
+    
+    newState = ~(0b10000000 | newState);
+    
+//    DEBUGBIN( newState );
+//    DEBUG( "\n" );
+    
+    return newState;
+
 } // uint8_t C64JoystickBase::readExtra()
 
 
+
+/**
+ * This reads the joystick state.
+ */
 uint8_t C64JoystickBase::read() 
 {
-#ifdef C64_USE_PORTS
-    
-    //uint8_t udl = (_C64_PINUDL >> 4); // (0b00000111 & (_C64_PINUDL >> 4));
-    //DEBUG( "UDL: " );
-    //DEBUGBIN( udl );
-    //uint8_t rf =  (_C64_PINRF << 3); // (0b00011000 & (_C64_PINRF << 3));
-    
-    //DEBUG( ", RF: " );
-    //DEBUGBIN( rf );
-    //uint8_t newState = ~( 0b11100000 | udl | rf );
-    
     uint8_t newState = ~( 0b11100000 | (_C64_PINUDL >> 4) | (_C64_PINRF << 3) );
     
-    //DEBUG( ", newState: " );
-    //DEBUGBIN( newState );
-    //newState = ~newState;
-    
-    //DEBUG( "buttonState: " );
-    //DEBUGBIN( newState );
-    //DEBUG( "\n" );
-    
-#else 
-
-    uint8_t newState = 0;
-    
-    for (uint8_t iter = 0; iter < _C64_MAX_BUTTONS; iter++)
-    {            
-        if (digitalRead( _pins[ iter ] ) == LOW)
-        {  
-            newState |= (1 << iter);
-        }
-        
-    }
-
-#endif /* C64_USE_PORTS */
-
 #ifdef C64_JOYSTICK_TEST
     DEBUG( "newState: " );
     DEBUGBIN( newState );
@@ -138,8 +131,13 @@ bool C64JoystickBase::update()
         _buttonState[0] = newState;        
         ret = true;
     }
-    
+
+#ifdef C64_EXTRA_BUTTONS
     newState = readExtra();
+#else
+    newState = 0;
+#endif
+
     if (newState != _buttonState[1])
     {
         _buttonState[1] = newState;
