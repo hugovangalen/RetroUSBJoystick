@@ -52,10 +52,6 @@ void C64JoystickRX::loop()
     while (hasData())
     {
         // DEBUGLN( "NRF24 has data." );
-#ifdef ERROR_LED
-        digitalWrite( ERROR_LED, HIGH );
-#endif
-        
         readData( &_packet );        
         
 #ifdef SERIAL_DEBUG
@@ -86,14 +82,31 @@ void C64JoystickRX::loop()
 //            _controller2.sync();
         }
 #else
+
+        // Update button state and sync to the
+        // host machine.
+        
+#ifdef ACTIVITY_ON_TX
+        TXLED1;
+#endif /* ACTIVITY_ON_TX */
+        
+        // Main joystick:
         _controller->set( _packet.buttonState[0] );
+        
+#ifdef C64_EXTRA_BUTTONS
+        
+        // Extra buttons (optional):
+        _controller->setExtra( _packet.buttonState[1] );
+        
+#endif /* C64_EXTRA_BUTTONS */
+        
         _controller->sync();
-#endif
-
-#ifdef ERROR_LED
-        digitalWrite( ERROR_LED, LOW );
-#endif
-
-    }
+        
+#ifdef ACTIVITY_ON_TX
+        TXLED0;
+#endif /* ACTIVITY_ON_TX */
+        
+#endif /* DUAL_JOYSTICK_MODE */        
+    } // while(hasData?
     
 } // void C64JoystickRX::loop()
