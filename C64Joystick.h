@@ -64,17 +64,9 @@ class C64Joystick : public C64JoystickBase, Joystick_ {
         false   // steering
     ) {}
     
-    //void setup();
     void loop();
     void sync();
     void begin();
-    
-    /* void begin() 
-    {
-        C64JoystickBase::begin();
-        
-        Joystick_::begin( false );
-    } */
 };
 
 #endif /* _C64_JOYSTICK_H_ */
