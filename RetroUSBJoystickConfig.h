@@ -31,7 +31,7 @@
  * Define `LOCAL_CLIENT` if no wireless is required, or if you 
  * want to debug joystick connections.
  */
-#define LOCAL_CLIENT
+//#define LOCAL_CLIENT
 
 
 /** 
@@ -47,15 +47,25 @@
 /** 
  * `REMOTE_SERVER` if this is the RECEIVER of wireless data. 
  */
-//#define REMOTE_SERVER
+#define REMOTE_SERVER
+
+
+
+/**
+ * Enable extra button support (this is mainly for the TheC64
+ * machines to access the additional functions.
+ */
+#define C64_EXTRA_BUTTONS
 
 
 /**
  * The server can receive for more than 1 joystick. Enable this
  * to expose 2 joysticks to the host.
+ * 
+ * (Great idea, but not all hosts see multiple joysticks, so
+ * this is not implemented right now.)
  */
 //#define DUAL_JOYSTICK_MODE
-
 
 
 /**
@@ -85,5 +95,12 @@
  * indicate activity when sending joystick updates.
  */
 #define ACTIVITY_ON_TX  
+
+
+/**
+ * This enables verbosity into the Serial Monitor. It is needed
+ * if you want to debug things.
+ */
+//#define SERIAL_DEBUG
 
 #endif /*_RETROUSBJOYSTICK_CONFIG_H_*/

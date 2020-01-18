@@ -10,13 +10,7 @@
 #define _C64_JOYSTICK_BASE_H_
 
 #include <Arduino.h>
-
-/**
- * This enables verbosity into the Serial Monitor. It is needed
- * if you want to debug things.
- */
-//#define SERIAL_DEBUG
-
+#include "RetroUSBJoystickConfig.h"
 
 /** 
  * If `C64_JOYSTICK_TEST` is defined, the button state
@@ -45,19 +39,17 @@
   #define DEBUGBIN( a )
 #endif
 
-#define _C64_PIN_UP        8
-#define _C64_PIN_DOWN      9
-#define _C64_PIN_LEFT     10
-#define _C64_PIN_RIGHT     3
-#define _C64_PIN_FIRE      2
 
-#define C64_UP             1
-#define C64_DOWN           2
-#define C64_LEFT           4
-#define C64_RIGHT          8
-#define C64_FIRE          16
+/**
+ * Bits in _buttonState[0]
+ */
+#define C64_UP             0b00001
+#define C64_DOWN           0b00010
+#define C64_LEFT           0b00100
+#define C64_RIGHT          0b01000
+#define C64_FIRE           0b10000
 
-#define C64_USE_PORTS
+
 
 /**
  * Interrupts are experimental. This appears
@@ -82,14 +74,60 @@
 #define _C64_MASKRF    0b00000011
 
 
+
+/** 
+ * Bits in _buttonState[1]
+ */
+#define C64_EXTRA_BACK     0b0000100
+#define C64_EXTRA_START    0b0001000
+#define C64_EXTRA_ENTER    0b0000001
+#define C64_EXTRA_SELECT   0b0000010
+
+#define C64_EXTRA_X        0b0010000
+#define C64_EXTRA_Y        0b0100000
+
+#define C64_EXTRA_TRIGGER  0b1000000
+
+/** 
+ * Extra button to USB button assignments.
+ */
+#define _C64_START         11
+#define _C64_A              2
+#define _C64_B              1
+#define _C64_BACK           8
+
+// Shoulder buttons
+#define _C64_X              3
+#define _C64_Y              9
+
+// Fire buttons:
+#define _C64_LTRIG          4
+#define _C64_RTRIG          5
+
+
 /**
- * TODO: EXTRA BUTTONS ON PCB BOARD for additional functions. 
+ * EXTRA BUTTONS ON PCB BOARD for additional functions. 
  * 
  * This is mainly for TheC64.
  */
-#define C64_EXTRA_BUTTONS
-#ifdef C64_EXTRA_BUTTONS
-#endif
+
+// Buttons 1,2,3 and 5 (pin 0 (PD2), 1 (PD3), 4 (PD4) and 6 (PD7) respectively)
+#define _C64_PORT1235   PORTD
+#define _C64_DDR1235    DDRD
+#define _C64_PIN1235    PIND
+#define _C64_MASK1235   0b10011100
+
+// Button 4 (pin 5 (PC6)
+#define _C64_PORT4      PORTC
+#define _C64_DDR4       DDRC
+#define _C64_PIN4       PINC
+#define _C64_MASK4      0x01000000
+
+// Button 6 and 7 (A3 (PF4) and A2 (PF5))
+#define _C64_PORT67     PORTF
+#define _C64_DDR67      DDRF
+#define _C64_PIN67      PINF
+#define _C64_MASK67     0x00110000
 
 /**
  * Interrupt stuff is not quite working out well.
@@ -107,43 +145,17 @@ class C64JoystickBase {
     bool    _irq;
 #endif
     
-#ifndef C64_USE_PORTS
-    uint8_t _pins[ _C64_MAX_BUTTONS ];
-#endif
-    
   protected:
     uint8_t _buttonState[2] = { 0, 0 };
     
   public:
     
-#ifdef C64_USE_PORTS
     C64JoystickBase() 
     {
 #ifdef C64_USE_INTERRUPTS
         _irq = true;
 #endif
     } // constructor
-#else
-    C64JoystickBase( 
-#ifdef C64_USE_INTERRUPTS
-        bool irq = false,
-#endif
-        uint8_t up = _C64_PIN_UP, 
-        uint8_t down = _C64_PIN_DOWN, 
-        uint8_t left = _C64_PIN_LEFT, 
-        uint8_t right = _C64_PIN_RIGHT, 
-        uint8_t fire = _C64_PIN_FIRE )
-    {
-        _pins[ 0 ] = up;
-        _pins[ 1 ] = down;
-        _pins[ 2 ] = left;
-        _pins[ 3 ] = right;
-        _pins[ 4 ] = fire;
-#ifdef C64_USE_INTERRUPTS
-        _irq = irq;
-#endif
-    } // constructor
-#endif
 
     void begin();
     bool update(); 
