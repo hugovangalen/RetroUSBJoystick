@@ -114,7 +114,6 @@ void setup()
   
 #endif /* LOCAL_CLIENT */
   
-
 #ifdef ERROR_LED 
   digitalWrite( ERROR_LED, LOW );
 #endif
@@ -131,6 +130,12 @@ void setup()
  */
 void loop() 
 {
+    /*
+    while(1) {
+        joy.readExtra();
+    }
+    */
+    
   joy.loop();  
     
 } // void loop()
