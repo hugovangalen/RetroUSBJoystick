@@ -65,9 +65,9 @@ The joystick is physically connected to the "client" board which sends the chang
 
 NOTE: All radio communication is *un-encrypted*. If you believe that's a problem, use the wired solution, above.
 
+<img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png" alt="Remote Server"/>
 ### Compilation and installation
 
-<img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png" alt="Remote Server"/>
 See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
 
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
