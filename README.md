@@ -6,6 +6,7 @@ To get things working with the TheC64, some modifications in the Joystick librar
 
 It is now also possible to connect it wirelessly. This requires NRF24L01 modules. See further down for more info.
 
+The latest version is 0.9.6-20200121a.
 
 ## Dependencies
 
