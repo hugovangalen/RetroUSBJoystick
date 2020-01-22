@@ -51,18 +51,19 @@ Female joystick connector as seen at the end of the cable:
 ```
 
 ## Wireless operation (via NRF24L01)
-
 <img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png" alt="Remote Client with extra buttons" />
+
 Wireless operation requirements:
+
 - You need two Arduino boards, and at least one should be based on a ATmega32u4 (i.e. with native USB support). 
 - Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
 Additional dependencies:
-<img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png" alt="Remote Server"/>
 The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
 The joystick is physically connected to the "client" board which sends the changes over the radio.
 
-(I did researched using an ESP8266 module. Initial experiments indicated there is too much processing overhead causing an annoying input lag.)
+<img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png" alt="Remote Server"/>
+(I did research using an ESP8266 module. Initial experiments indicated there is too much processing overhead causing an annoying input lag.)
 
 NOTE: All radio communication is *un-encrypted*. If you believe that's a problem, use the wired solution, above.
 
