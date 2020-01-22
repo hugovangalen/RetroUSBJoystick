@@ -12,6 +12,7 @@ It is now also possible to connect it wirelessly. This requires NRF24L01 modules
 - Arduino IDE,
 - Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
 - NRFLite library, https://github.com/dparson55/NRFLite (for wireless operation only) This can be installed through the Library Manager in Arduino IDE.
+- AESLib library, https://github.com/DavyLandman/AESLib (for wireless encryption only)
 
 ### Pre-compiled binaries
 
@@ -68,9 +69,14 @@ The joystick is physically connected to the "client" board which sends the chang
 NOTE: All radio communication is *un-encrypted*. If you believe that's a problem, use the wired solution, above.
 
 ### Compilation and installation
-See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
+See below for the connections for the NRF24L01 module. You will need to compile and upload two different sketches to the two boards.
 
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
+
+### Encryption
+You need to modify the `REMOTE_ENCRYPTION_KEY` in the file `RetroUSBJoystickConfig.h`. It is the key that will be used to encrypt / decrypt the packets. 
+
+If you do not change this value, this may result in the receiver interpreting packets from a secondary remote client within the range of the radio.
 
 <img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png" alt="Remote Client" title="Remote client" />
 
