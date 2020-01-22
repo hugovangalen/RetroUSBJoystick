@@ -73,6 +73,7 @@ See below for the connections for the NRF24L01 module. You need to compile and u
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
 
 <img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png" alt="Remote Client" title="Remote client" />
+
 For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
 
 ### Connections
