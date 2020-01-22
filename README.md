@@ -56,11 +56,8 @@ Wireless operation requirements:
 - You need two Arduino boards, and at least one should be based on a ATmega32u4 (i.e. with native USB support). 
 - Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
-<img align="left" width="128" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png" />
-![Remote Client With Buttons](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png)
-
 Additional dependencies:
-
+<img align="right" width="180" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png" alt="Remote Client with extra buttons" />
 The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
 The joystick is physically connected to the "client" board which sends the changes over the radio.
 
@@ -71,12 +68,10 @@ NOTE: All radio communication is *un-encrypted*. If you believe that's a problem
 ### Compilation and installation
 
 See below for the connections for the NRF24L01 module. You need to compile and upload two different sketches to the two boards.
-
-![Remote Server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png)
+<img align="right" width="180" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/server.png" alt="Remote Server"/>
 
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
-
-![Remote Client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png)
+<img align="right" width="180" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png" alt="Remote Client"/>
 
 For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
 
