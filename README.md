@@ -79,7 +79,7 @@ For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defin
 ### Encryption
 If you want to use encryption, you will need to enable and modify the `REMOTE_ENCRYPTION_KEY` define in the file `RetroUSBJoystickConfig.h`. If this value is not defined, encryption shall not be compiled in.
 
-The encryption feature is added to prevent packets from other remotes within radio range to get interpreted. It adds a minimal layer security / privacy, but does not prevent replay-attacks.
+The encryption feature is added to prevent packets from other remotes within radio range to get interpreted. It adds a minimal layer of security and privacy -- but it does not protect against so-called "replay-attacks". But it's "just" joystick movements, so, I guess it should be fine. :)
 
 If you do decide to enable encryption, and you do not change the key value itself, this may result in the receiver interpreting packets from a secondary remote client within the range of the radio.
 
