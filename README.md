@@ -18,8 +18,10 @@ The latest version is 0.9.6-20200121a.
 ### Pre-compiled binaries
 
 For your convenience I have added pre-compiled .hex files. This is useful if you don't want to modify the Joystick library and mess around in `boards.txt`.
+
+The latest pre-compiled binaries are for version 0.9.5-20200118a:
 - For wired operation, download [the standalone version](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_STANDALONE.ino.leonardo.hex).
-- For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex).
+- For wireless operation, you need to download the [server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_SERVER.ino.leonardo.hex) and the [client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/precompiled/RetroUSBJoystick_CLIENT.ino.leonardo.hex). (This is a version that does *not* use encryption.)
 
 
 ## Wired operation
