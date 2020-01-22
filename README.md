@@ -56,6 +56,8 @@ Wireless operation requirements:
 - You need two Arduino boards, and at least one should be based on a ATmega32u4 (i.e. with native USB support). 
 - Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
+![Remote Client With Buttons](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png)
+
 Additional dependencies:
 
 The "server" will be connected to the PC or other machine via USB and receives radio packets from the "client".
@@ -73,7 +75,7 @@ See below for the connections for the NRF24L01 module. You need to compile and u
 
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
 
-![Remote Server](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png)
+![Remote Client](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png)
 
 For the "client" (the sending part), ensure that only `REMOTE_CLIENT` is defined, and `LOCAL_CLIENT` and `REMOTE_SERVER` are not. Compile and upload the sketch to the other board.
 
