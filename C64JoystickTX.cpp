@@ -14,6 +14,10 @@
  */
 static C64JoystickTX *_radioPointer = NULL;
 
+#ifdef REMOTE_ENCRYPTION_KEY
+static uint8_t _aes_key[] = REMOTE_ENCRYPTION_KEY;
+#endif
+
 /*
 static bool _sendSucceeded, _sendFailed;
 
@@ -56,7 +60,13 @@ C64JoystickTX::C64JoystickTX( uint8_t deviceId ) : NRFLite(), C64JoystickBase()
     
     _packet.id = _deviceId;
     _packet.seq = 0;
-}
+    
+#ifdef REMOTE_ENCRYPTION_KEY
+    // Clear out the padding bytes...
+    memset( _packet.padding, 0, sizeof( _packet.padding ) );
+#endif
+    
+} // constructor
 
 
 
@@ -132,13 +142,22 @@ void C64JoystickTX::sync()
         Serial.println( _packet.buttonState[1], HEX );
 #endif
         
+#ifdef REMOTE_ENCRYPTION_KEY
+        
+        // Copy into payload to encrypt it...
+        _packet.check = (_packet.seq + _packet.id);
+        memcpy( _payload, &_packet, sizeof(_packet) );
+        
+        aes256_enc_single( _aes_key, _payload );
+        
+        if (!send( REMOTE_SERVER_ID, &_payload, sizeof( _payload )))
+#else
         if (!send( REMOTE_SERVER_ID, &_packet, sizeof( _packet )))
+#endif
         {
             _failedTx++;
         
-   
-
- #ifdef SERIAL_DEBUG
+#ifdef SERIAL_DEBUG
             if (_failedTx > 16)
             {
 #ifdef ERROR_LED

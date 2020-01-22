@@ -6,6 +6,10 @@
  */
 #include "C64JoystickRX.h"
 
+#ifdef REMOTE_ENCRYPTION_KEY
+static uint8_t _aes_key[] = REMOTE_ENCRYPTION_KEY;
+#endif
+
 /**
  * This initialises the radio. If all looks okay, this will
  * return `true`.
@@ -52,7 +56,30 @@ void C64JoystickRX::loop()
     while (hasData())
     {
         // DEBUGLN( "NRF24 has data." );
+#ifdef REMOTE_ENCRYPTION_KEY
+        
+        // Read the encrypted payload...
+        readData( &_payload );
+        
+        // Attempt to decrypt it. The decryption routines
+        // do not tell us whether it was bad, so we need
+        // to add our own additional check:
+        aes256_dec_single( _aes_key, &_payload );
+        memcpy( &_packet, _payload, sizeof( _packet ) );
+        
+        // Verify the incoming payload...
+        if ((_packet.check != _packet.seq + _packet.id)
+            || (_packet.padding[0] != 0)
+            || (_packet.padding[7] != 0))
+        {
+            DEBUGLN( "Bad encrypted packet!" );
+            continue;
+        }
+        
+#else
         readData( &_packet );        
+#endif
+        
         
 #ifdef SERIAL_DEBUG
         Serial.print( "Received seq=" );

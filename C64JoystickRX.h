@@ -11,12 +11,16 @@
 
 #include <Arduino.h>
 
+#include "NRF24Config.h"
+#include "RetroUSBJoystickConfig.h"
+
 #include <SPI.h>
 #include <NRFLite.h>
 #include <Joystick.h>
 
-#include "NRF24Config.h"
-#include "RetroUSBJoystickConfig.h"
+#ifdef REMOTE_ENCRYPTION_KEY
+#include <AESLib.h>
+#endif
 
 #include "C64Joystick.h"
 #include "C64JoystickPacket.h"
@@ -38,8 +42,11 @@ class C64JoystickRX : public NRFLite {
 #else
         JoystickPointer _controller;
 #endif
-            
 
+#ifdef REMOTE_ENCRYPTION_KEY
+        //uint8_t _aes_key[] = REMOTE_ENCRYPTION_KEY;
+        uint8_t _payload[ sizeof(JoystickPacket) ];
+#endif
         
     public:
         C64JoystickRX() : NRFLite() {

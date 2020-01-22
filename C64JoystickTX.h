@@ -9,11 +9,15 @@
 #ifndef _C64_JOYSTICK_TX_H_
 #define _C64_JOYSTICK_TX_H_
 
+#include "NRF24Config.h"
+#include "RetroUSBJoystickConfig.h"
+
 #include <SPI.h>
 #include <NRFLite.h>
 
-#include "NRF24Config.h"
-#include "RetroUSBJoystickConfig.h"
+#ifdef REMOTE_ENCRYPTION_KEY
+#include <AESLib.h>
+#endif
 
 #include "C64JoystickBase.h"
 #include "C64JoystickPacket.h"
@@ -32,6 +36,11 @@ class C64JoystickTX : public NRFLite, C64JoystickBase {
         
         uint32_t _txCount = 0;
         uint32_t _failedTx = 0;
+
+#ifdef REMOTE_ENCRYPTION_KEY
+        //uint8_t _aes_key[32] = REMOTE_ENCRYPTION_KEY;
+        uint8_t _payload[ sizeof(JoystickPacket) ];
+#endif
 
     public:
         C64JoystickTX( uint8_t deviceId );
