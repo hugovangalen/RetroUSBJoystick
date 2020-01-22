@@ -10,9 +10,9 @@ It is now also possible to connect it wirelessly. This requires NRF24L01 modules
 ## Dependencies
 
 - Arduino IDE,
-- Joystick library, https://github.com/MHeironimus/ArduinoJoystickLibrary
-- NRFLite library, https://github.com/dparson55/NRFLite (for wireless operation only) This can be installed through the Library Manager in Arduino IDE.
-- AESLib library, https://github.com/DavyLandman/AESLib (for wireless encryption only)
+- Joystick library: https://github.com/MHeironimus/ArduinoJoystickLibrary
+- NRFLite library: https://github.com/dparson55/NRFLite (for wireless operation only) This can be installed through the Library Manager in Arduino IDE.
+- AESLib library: https://github.com/DavyLandman/AESLib (for wireless operation only)
 
 ### Pre-compiled binaries
 
