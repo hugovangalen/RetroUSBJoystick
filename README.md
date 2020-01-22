@@ -56,6 +56,7 @@ Wireless operation requirements:
 - You need two Arduino boards, and at least one should be based on a ATmega32u4 (i.e. with native USB support). 
 - Two NRF24L01 modules. NOTE: These modules run on 3.3V -- connecting them to 5V from the Arduino may fry them!
 
+<img align="left" width="128" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png" />
 ![Remote Client With Buttons](https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client_with_buttons.png)
 
 Additional dependencies:
