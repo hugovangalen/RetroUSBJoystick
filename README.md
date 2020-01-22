@@ -74,9 +74,9 @@ See below for the connections for the NRF24L01 module. You will need to compile 
 For the "server" (the receiving part), ensure that only `REMOTE_SERVER` is defined in `RetroUSBJoystickConfig.h`, and `LOCAL_CLIENT` / `REMOTE_CLIENT` are not. Compile and upload the sketch.
 
 ### Encryption
-You need to modify the `REMOTE_ENCRYPTION_KEY` in the file `RetroUSBJoystickConfig.h`. It is the key that will be used to encrypt / decrypt the packets. 
+If you want to use encryption, you will need to enable and modify the `REMOTE_ENCRYPTION_KEY` define in the file `RetroUSBJoystickConfig.h`. If this value is not defined, encryption shall not be compiled in.
 
-If you do not change this value, this may result in the receiver interpreting packets from a secondary remote client within the range of the radio.
+If you do decide to enable encryption, and you do not change the key value itself, this may result in the receiver interpreting packets from a secondary remote client within the range of the radio.
 
 <img align="right" width="240" src="https://raw.githubusercontent.com/hugovangalen/RetroUSBJoystick/master/img/client.png" alt="Remote Client" title="Remote client" />
 
@@ -99,8 +99,8 @@ The 8 pin NRF24L01 module should be connected to the following pins on both boar
 
 ## Troubleshooting
 
-- If the Arduino cannot initialise the NRF24 module, it will blink the LED repeatedly.
-- In case of problems you can enable "SERIAL_DEBUG" in `C64JoystickBase.h` to see more verbose operation in the Serial Monitor in the Arduino IDE (9600 baud).
+- If the Arduino cannot initialise the NRF24 module, it will blink a LED repeatedly.
+- In case of problems, you can enable `SERIAL_DEBUG` in the file `C64JoystickBase.h` to see more verbose operation in the Serial Monitor in the Arduino IDE (9600 baud).
 
 ## License
 
