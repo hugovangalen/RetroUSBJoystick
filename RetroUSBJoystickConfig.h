@@ -32,7 +32,7 @@
  * Enable extra button support (this is mainly for the TheC64
  * machines to access the additional functions.
  */
-//#define C64_EXTRA_BUTTONS
+#define C64_EXTRA_BUTTONS
 
 /** 
  * Define `LOCAL_CLIENT` if no wireless is required, or if you 
@@ -40,6 +40,20 @@
  */
 #define LOCAL_CLIENT
 
+
+
+/**
+ * Define `REMOTE_ENCRYPTION_KEY` if you want to use AES256
+ * to encrypt communications. 
+ * 
+ * This is purely to prevent receiving packets intended for 
+ * another device -- this does *not* prevent replay attacks!
+ */
+#define REMOTE_ENCRYPTION_KEY   "\x01\x02\x03\x04\x05\x06\x07\x08"\
+                                "\x01\x02\x03\x04\x05\x06\x07\x08"\
+                                "\x01\x02\x03\x04\x05\x06\x07\x08"\
+                                "\x01\x02\x03\x04\x05\x06\x07\x08"
+                                
 
 /** 
  * `REMOTE_CLIENT` if this is the SENDER of wireless data, this
